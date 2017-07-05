@@ -17,4 +17,13 @@ describe('Sparse Vector', function(){
         expect(vector2.get(9)).to.equal(0);
      });  
    });
+   describe('set() and get()', function(){
+      it('should return 0 when set a value smaller than 0.000000000000001 at an index', function(){
+         var vector1 = new jsmatrix.Vector(10, {1: 3, 5: 2, 7: 4});
+         vector1.set(1, 0.000000000000002);
+         vector1.set(5, 0.0000000000000001);
+         expect(vector1.get(1)).to.equal(0.000000000000002);
+         expect(vector1.get(5)).to.equal(0);
+      });
+   });
 });

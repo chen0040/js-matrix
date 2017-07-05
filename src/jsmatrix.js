@@ -1,6 +1,13 @@
 var jsmatrix = jsmatrix || {};
 
 (function(jss){
+    jss.isZero = function(val) {
+        if(Math.abs(val) < 0.000000000000001) {
+            return true;
+        }  
+        return false;
+    };
+    
 	var Vector = function(dimension, data){
         this.dimension = dimension;
         this.id = -1;
@@ -27,9 +34,19 @@ var jsmatrix = jsmatrix || {};
     
     Vector.prototype.get = function(index) {
         if(index in this.data) {
-            return this.data;
+            return this.data[index];
         }  
         return 0;
+    };
+    
+    Vector.prototype.set = function(index, value) {
+        if(index >= 0 && index < this.dimension) {
+            if(jss.isZero(value)){
+                delete this.data[index];
+            } else {
+                this.data[index] = value;
+            }
+        }  
     };
     
 

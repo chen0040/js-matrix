@@ -49,6 +49,111 @@ var jsmatrix = jsmatrix || {};
         }  
     };
     
+    Vector.prototype.indexWithMinValue = function() {
+        var minValue = Number.MIN_VALUE;
+        var indexWithMinValue = -1;
+        
+        var count = 0;
+        for(var index in this.data) {
+            if(minValue > this.data[index]) {
+                minValue = this.data[index];
+                indexWithMinValue = index;
+            }
+            count++;
+        }
+        
+        if(count < this.dimension && minValue > 0) {
+            minValue = 0;
+            for(var i = 0;  i < this.dimension; ++i) {
+                if(!(i in this.data)){
+                    indexWithMinValue = i;
+                    break;
+                }
+            }
+        }
+        
+        return {
+            index : indexWithMinValue,
+            value: minValue
+        };
+    };
+    
+    Vector.prototype.dotProduct = function(that) {
+        var result = 0;
+        for(var index in this.data) {
+            result += this.data[index] * that.get(index);
+        }  
+        return result;
+    };
+    
+    Vector.prototype.scaleBy = function(scalar) {
+        var clone = this.makeCopy();
+        for(var index in this.data) {
+            clone.set(index, this.data[index] * scalar);
+        }
+        return clone;
+    };
+    
+    Vector.prototype.minus = function(that) {
+        var result = this.makeCopy();
+        for(var i=0; i < this.dimension; ++i) {
+            result.set(i, this.get(i) - that.get(i));
+        }
+        return result;
+    };
+    
+    Vector.prototype.projectAlong = function(that, extra) {
+        var norm_a = that.dotProduct(that);
+        if(jss.isZero(norm_a)) {
+            return new Vector(this.dimension);
+        }
+        var scalar = this.dotProduct(that) / norm_a;
+        if(extra) {
+            extra.scalar = scalar;
+        }
+        return that.scaleBy(scalar);
+    };
+    
+    Vector.prototype.length = function() {
+        return Math.sqrt(this.dotProduct(this));  
+    };
+    
+    Vector.prototype.minus = function(that) {
+        var result = this.makeCopy();
+        for(var index = 0; index < this.dimension; ++index) {
+            result.set(index, this.get(index) - that.get(index));
+        }
+        return result;
+    };
+    
+    Vector.prototype.projectOrthogonal = function(vectors, sigma) {
+        var b = this.makeCopy();
+        for(var i=0; i < vectors.length; ++i) {
+            var extra = {};
+            b = b.minus(b.projectAlong(vectors[i], extra));
+            if(sigma) {
+                sigma[i] = extra.scalar;
+            }
+        }
+        return b;
+    };
+    
+    Vector.prototype.norm = function(level) {
+        var result = 0;
+        if(level == 1) {
+            for(var index in this.data) {
+                result += Math.abs(this.data[index]);
+            }
+        } else if (level == 2) {
+            return this.length();
+        } else {
+            for(var index in this.data) {
+                result += Math.pow(Math.abs(this.data[index]), 1.0 / level);
+            }
+        }
+        return result;
+    };
+    
 
     jss.Vector = Vector;
 

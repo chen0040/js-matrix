@@ -100,9 +100,11 @@ describe('Sparse Vector', function(){
        it('should return a vector which is perpendicular to all other vectors', function(){
            var vector1 = new jsmatrix.Vector(10, {1: 3, 5: 2, 7: 4});
            var vector2 = new jsmatrix.Vector(10, {0: 1, 2: 2, 5: 2});
-           var vector3 = new jsmatrix.Vector(10, {1: 2, 2: 2, 8:1});
+           var vector3 = vector1.projectOrthogonal([vector2]);
+           expect(Math.abs(vector3.dotProduct(vector2))).to.below(0.00000000000001);
            var sigma = {};
            var vector4 = vector1.projectOrthogonal([vector2, vector3], sigma);
+           expect(Math.abs(vector4.dotProduct(vector2))).to.below(0.0000000000001);
            expect(Math.abs(vector4.dotProduct(vector3))).to.below(0.0000000000001);
        });
     });

@@ -235,6 +235,20 @@ var jsmatrix = jsmatrix || {};
         return clone;
     };
     
+    Matrix.prototype.multiply = function (that) {
+        var result = new Matrix(this.rowCount, that.columnCount);
+        var tt = that.transpose();
+        
+        for(var rowIndex in this.rows) {
+            var row = this.rows[rowIndex];
+            for(var columnIndex in tt.rows) {
+                var column = tt.rows[columnIndex];
+                result.set(rowIndex, columnIndex, row.dotProduct(column));
+            }
+        }
+        return result;
+    };
+    
     
     jss.Matrix = Matrix;
 

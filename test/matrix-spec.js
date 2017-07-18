@@ -16,9 +16,6 @@ describe("Matrix", function() {
           m.set(3, 2, 5);
           m.set(1, 2, 1);
           var columnVectors = m.columnVectors();
-          for(var columnIndex in columnVectors) {
-              console.log("column: " + columnIndex);
-          }
           expect(columnVectors[1].get(0)).to.equal(10);
           expect(columnVectors[2].get(1)).to.equal(1);
           expect(columnVectors[2].get(3)).to.equal(5);
@@ -61,6 +58,37 @@ describe("Matrix", function() {
              }
          }
      });
+  });
+    
+  describe('multiply()', function() {
+      it('should return the multiplication result of two matrices', function(){
+          var m1 = new jsmatrix.Matrix(2, 2);
+          m1.set(0, 0, 1);
+          m1.set(0, 1, 1);
+          m1.set(1, 0, 0);
+          m1.set(1, 1, 1);
+          var m2 = new jsmatrix.Matrix(2, 2);
+          m2.set(0, 0, 0);
+          m2.set(0, 1, -1);
+          m2.set(1, 0, 1);
+          m2.set(1, 1, 0);
+
+          var m3 = new jsmatrix.Matrix(2, 2);
+          m3.set(0, 0, 1);
+          m3.set(0, 1, -1);
+          m3.set(1, 0, 1);
+          m3.set(1, 1, 0);
+
+          var m4 = m1.multiply(m2);
+
+          for(var rowIndex =0; rowIndex < 2; ++rowIndex) {
+              for(var columnIndex = 0; columnIndex < 2; ++columnIndex) {
+                expect(m3.get(rowIndex, columnIndex)).to.equal(m4.get(rowIndex, columnIndex));        
+              }
+          }
+      });
+     
+      
   });
 
 

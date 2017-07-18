@@ -17,6 +17,13 @@ var jsmatrix = jsmatrix || {};
         }
     };
     
+    Vector.prototype.isZero = function() {
+        for(var index in this.data) {
+            return false;
+        }
+        return true;
+    };
+    
     Vector.prototype.copy = function(that) {
         this.data = {};
         for(var key in that.data) {
@@ -156,6 +163,54 @@ var jsmatrix = jsmatrix || {};
     
 
     jss.Vector = Vector;
+    
+    var Matrix = function(rowCount, columnCount) {
+        this.rowCount = rowCount;
+        this.columnCount = columnCount;
+        this.rows = {};
+    };
+    
+    Matrix.prototype.get = function(rowIndex, columnIndex) {
+        if(rowIndex in this.rows) {
+            return this.rows[rowIndex].get(columnIndex);
+        } else {
+            return 0;
+        }
+    };
+    
+    Matrix.prototype.set = function(rowIndex, columnIndex, val) {
+        if(jss.isZero(val)) {
+            return;
+        }  
+        if(rowIndex in this.rows) {
+            this.rows[rowIndex].set(columnIndex, val);
+        } else {
+            var row = new jss.Vector(this.columnCount);
+            row.set(columnIndex, val);
+            this.rows[rowIndex] = row;
+        }
+    };
+    
+    Matrix.prototype.columnVectors = function () {
+        var columns = {};
+        for(var columnIndex = 0; columnIndex < this.columnCount; ++columnIndex) {
+            var column = new jss.Vector(this.rowCount);
+            for(var rowIndex = 0; rowIndex < this.rowCount; ++rowIndex) {
+                var val = this.get(rowIndex, columnIndex);
+                if(val != 0) {
+                    column.set(rowIndex, val);
+                }
+            }
+            if(column.isZero()) {
+                continue;
+            }
+            columns[columnIndex] = column;
+        }
+        return columns;
+    };
+    
+    
+    jss.Matrix = Matrix;
 
 })(jsmatrix);
 

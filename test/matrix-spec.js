@@ -31,8 +31,36 @@ describe("Matrix", function() {
           expect(columnVectors[8]).to.equal(undefined);
           expect(columnVectors[9]).to.equal(undefined);
       });
-      
-      
+  });
+    
+  describe("makeCopy()", function() {
+     it('should return an exact copy of itself', function() {
+         var m = new jsmatrix.Matrix(10, 10);
+         m.set(0, 1, 10);
+         m.set(3, 2, 5);
+         m.set(1, 2, 1);
+         var m2 = m.makeCopy();
+         for(var rowIndex = 0; rowIndex < m.rowCount; ++rowIndex) {
+             for(var columnIndex = 0; columnIndex < m.columnCount; ++columnIndex) {
+                 expect(m.get(rowIndex, columnIndex)).to.equal(m2.get(rowIndex, columnIndex));
+             }
+         }
+     }) ;
+  });
+    
+  describe('transpose()', function() {
+     it('should return the transpose of the original matrix', function() {
+         var m = new jsmatrix.Matrix(10, 10);
+         m.set(0, 1, 10);
+         m.set(3, 2, 5);
+         m.set(1, 2, 1);
+         var m2 = m.transpose();
+         for(var rowIndex = 0; rowIndex < m.rowCount; ++rowIndex) {
+             for(var columnIndex = 0; columnIndex < m.columnCount; ++columnIndex) {
+                 expect(m.get(rowIndex, columnIndex)).to.equal(m2.get(columnIndex, rowIndex));
+             }
+         }
+     });
   });
 
 

@@ -209,6 +209,32 @@ var jsmatrix = jsmatrix || {};
         return columns;
     };
     
+    Matrix.prototype.copy = function (that) {
+        this.rowCount = that.rowCount;
+        this.columnCount = that.columnCount;
+        this.rows = {};
+        for(var rowIndex in that.rows) {
+            this.rows[rowIndex] = that.rows[rowIndex].makeCopy();
+        }
+    };
+    
+    Matrix.prototype.makeCopy = function () {
+        var clone = new Matrix(this.rowCount, this.columnCount);
+        clone.copy(this);
+        return clone;
+    };
+    
+    Matrix.prototype.transpose = function() {
+        var clone = new Matrix(this.columnCount, this.rowCount);
+        for(var rowIndex in this.rows) {
+            var row = this.rows[rowIndex];
+            for(var columnIndex in row.data) {
+                clone.set(columnIndex, rowIndex, row.data[columnIndex]);
+            }
+        }
+        return clone;
+    };
+    
     
     jss.Matrix = Matrix;
 

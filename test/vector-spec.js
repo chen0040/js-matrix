@@ -109,6 +109,23 @@ describe('Sparse Vector', function(){
        });
     });
     
+    describe('orthogonalize()', function() {
+       it('should return a set of orthogonal vectors for which the first vector is the same as the input', function() {
+           var vector1 = new jsmatrix.Vector(10, {1: 3, 5: 2, 7: 4});
+           var vector2 = new jsmatrix.Vector(10, {0: 1, 2: 2, 5: 2});
+           var vector3 = new jsmatrix.Vector(10, {0: 2, 5: 1, 6: 2});
+           var result = jsmatrix.orthogonalize([vector1, vector2, vector3]);
+           expect(result.length).to.equal(3);
+           expect(result[0].isEqualTo(vector1)).to.equal(true);
+           for(var i=0; i < result.length; ++i){
+               for(var j=0; j < result.length; ++j) {
+                   if(i == j) continue;
+                   expect(result[i].dotProduct(result[j])).to.below(0.0000000000001);
+               }
+           }
+       });
+    });
+    
     describe('norm()', function(){
        it('should return norm of various levels', function(){
            var vector1 = new jsmatrix.Vector(10, {1: 3, 5: 2, 7:4});

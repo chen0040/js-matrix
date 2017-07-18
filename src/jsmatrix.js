@@ -46,6 +46,15 @@ var jsmatrix = jsmatrix || {};
         return 0;
     };
     
+    Vector.prototype.isEqualTo = function(that) {
+        for(var i=0; i < this.dimension; ++i) {
+            if(this.get(i) != that.get(i)) {
+                return false;
+            }
+        }  
+        return true;
+    };
+    
     Vector.prototype.set = function(index, value) {
         if(index >= 0 && index < this.dimension) {
             if(jss.isZero(value)){
@@ -163,6 +172,16 @@ var jsmatrix = jsmatrix || {};
     
 
     jss.Vector = Vector;
+    
+    jss.orthogonalize = function(vlist) {
+        var result = [];
+        for(var i = 0; i < vlist.length; ++i) {
+            var v = vlist[i];
+            var v_p = v.projectOrthogonal(result);
+            result.push(v_p);
+        }
+        return result;
+    };
     
     var Matrix = function(rowCount, columnCount) {
         this.rowCount = rowCount;

@@ -249,6 +249,15 @@ var jsmatrix = jsmatrix || {};
         return result;
     };
     
+    Matrix.prototype.multiplyVector = function (that) {
+        var result = new jss.Vector(this.rowCount);
+        for(var rowIndex in this.rows) {
+            var row = this.rows[rowIndex];
+            result.set(rowIndex, row.dotProduct(that));
+        }
+        return result;
+    };
+    
     
     jss.Matrix = Matrix;
 

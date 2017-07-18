@@ -90,6 +90,21 @@ describe("Matrix", function() {
      
       
   });
+    
+  describe('multiplyVector()', function() {
+     it('should return a vector with rowCount as its length', function(){
+         var m1 = new jsmatrix.Matrix(2, 2);
+         m1.set(0, 0, 1);
+         m1.set(0, 1, 1);
+         m1.set(1, 0, 0);
+         m1.set(1, 1, 1);
+         var v1 = new jsmatrix.Vector(2);
+         v1.set(1, 1);
+         var v2 = m1.multiplyVector(v1);
+         expect(v2.get(0)).to.equal(1);
+         expect(v2.get(1)).to.equal(1);
+     }) ;
+  });
 
 
 });

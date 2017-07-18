@@ -105,6 +105,14 @@ describe("Matrix", function() {
          expect(v2.get(1)).to.equal(1);
      }) ;
   });
+    
+  describe('isSymmetric()', function() {
+     it('should return true if the matrix is symmetric', function() {
+         var m1 = new jsmatrix.Matrix(2, 2);
+         m1.set(1, 1, 1);
+         expect(m1.isSymmetric()).to.equal(true);
+     }) ;
+  });
 
 
 });

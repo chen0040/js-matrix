@@ -258,6 +258,21 @@ var jsmatrix = jsmatrix || {};
         return result;
     };
     
+    Matrix.prototype.isSymmetric = function () {
+        if(this.rowCount != this.columnCount) {
+            return false;
+        }  
+        
+        for(var rowIndex = 0; rowIndex < this.rowCount; ++rowIndex) {
+            for(var columnIndex = 0; columnIndex < this.columnCount; ++columnIndex) {
+                if(this.get(rowIndex, columnIndex) != this.get(columnIndex, rowIndex)) {
+                    return false;
+                }
+            }   
+        }
+        return true;
+    };
+    
     
     jss.Matrix = Matrix;
 
